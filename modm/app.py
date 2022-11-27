@@ -1,18 +1,24 @@
 import sys
-from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtCore import QDir
+
+from PySide6.QtGui import QPalette, QColor,QScreen
 from PySide6.QtWebEngineCore import QWebEngineSettings
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (
     QApplication,
-    QHBoxLayout,
     QMainWindow,
-    QPushButton,
-    QVBoxLayout,
     QWidget,
     QTabWidget,
+    QHBoxLayout,
+    QPushButton,
+    QVBoxLayout,
     QLineEdit,
+    QTreeView,
+    QFileSystemModel,
+    QListView
 )
-from PySide6.QtGui import QPalette, QColor
+from modm.functions.cms import cms
+
 class Color(QWidget):
 
     def __init__(self, color):
@@ -28,30 +34,29 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
-        self.setWindowTitle("My App")
-        SrcSize = QtGui.QScreen.availableGeometry(QApplication.primaryScreen())
+        self.setWindowTitle("My Own Document Management")
+        screen_size = QScreen.availableGeometry(QApplication.primaryScreen())
 
         #Get Screen Width
-        frmX=SrcSize.width()
+        screen_size_x=screen_size.width()
 
         #Get Screen Height
-        frmY=SrcSize.height()
+        screen_size_y=screen_size.height()
 
         #Pyside Window State maximized
-        self.setGeometry(0, 0, frmX, frmY)
-        
+        self.setGeometry(0, 0, screen_size_x, screen_size_y)
+
         self.file_path = '/home/user/Downloads'
 
         layout_cms = QHBoxLayout()
 
-
         # Folder Layout
-        self.widget_tree_folders = QtWidgets.QTreeView()
+        self.widget_tree_folders = QTreeView()
         self.widget_tree_folders.clicked.connect(self.open_folder)
-        self.model_folders = QtWidgets.QFileSystemModel()
-        self.model_folders.setFilter(QtCore.QDir.NoDotDot | QtCore.QDir.Dirs) 
+        self.model_folders = QFileSystemModel()
+        self.model_folders.setFilter(QDir.NoDotDot | QDir.Dirs)
         layout_cms.addWidget(self.widget_tree_folders,stretch=1)
-        
+
         # Files Layout
         layout_files = QVBoxLayout()
 
@@ -61,17 +66,17 @@ class MainWindow(QMainWindow):
         search_input_text.setMaxLength(10)
         search_input_text.setPlaceholderText("Enter your text")
         layout_files_search.addWidget(search_input_text)
-        
+
         search_button_search = QPushButton("Search")
         layout_files_search.addWidget(search_button_search)
 
-        self.widget_list_files = QtWidgets.QListView()
+        self.widget_list_files = QListView()
         self.widget_list_files.clicked.connect(self.open_document)
-        self.model_files = QtWidgets.QFileSystemModel()
+        self.model_files = QFileSystemModel()
         self.model_files.setNameFilterDisables(False)
-        self.model_files.setFilter(QtCore.QDir.Files)
+        self.model_files.setFilter(QDir.Files)
         self.model_files.setNameFilters(["*.pdf"])
-    
+
         layout_files.addLayout(layout_files_search)
         layout_files.addWidget(self.widget_list_files)
 
@@ -98,20 +103,27 @@ class MainWindow(QMainWindow):
         layout_document_buttons.addWidget(document_button_share)
         document_button_mail = QPushButton("Mail")
         layout_document_buttons.addWidget(document_button_mail)
-        
+
         layout_document.addLayout(layout_document_buttons)
         layout_cms.addLayout(layout_document,stretch=3)
 
-        
-        widget_cms = QWidget()
-        widget_cms.setLayout(layout_cms)
+        self.model_folders.setRootPath(self.file_path)
+        self.widget_tree_folders.setModel(self.model_folders)
+        self.widget_tree_folders.setRootIndex(self.model_folders.index(self.file_path))
 
+        self.model_files.setRootPath(self.file_path)
+        self.widget_list_files.setModel(self.model_files)
+        self.widget_list_files.setRootIndex(self.model_files.index(self.file_path))
+        self.widget_cms = QWidget()
+        self.widget_cms.setLayout(layout_cms)
+
+        content_cms = cms()
         # Tab Menu
         tab_menu = QTabWidget()
         tab_menu.setTabPosition(QTabWidget.West)
         tab_menu.setMovable(True)
-        tab_menu.addTab(widget_cms, 'CMS')
-        tab_menu.addTab(Color('red'), 'Merge')
+        tab_menu.addTab(content_cms.widget_cms, 'CMS')
+        tab_menu.addTab(self.widget_cms, 'Merge')
         tab_menu.addTab(Color('red'), 'Split')
         tab_menu.addTab(Color('red'), 'Rename')
         tab_menu.addTab(Color('red'), 'Edit')
@@ -123,30 +135,18 @@ class MainWindow(QMainWindow):
     def open_folder(self,index):
         self.file_path = self.model_folders.filePath(index)
         self.model_files.setRootPath(self.file_path)
-        self.model_files.setFilter(QtCore.QDir.Files)
+        self.model_files.setFilter(QDir.Files)
         self.widget_list_files.setModel(self.model_files)
         self.widget_list_files.setRootIndex(self.model_files.index(self.file_path))
 
     def open_document(self,index):
         self.view.setUrl(f"file://{self.model_files.filePath(index)}")
-
-    def url_changed(self):
-        self.setWindowTitle(self.view.title())
- 
-    def go_back(self):
-        self.view.back()
-
-        
-if __name__ == '__main__':
+def run():
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
 
-    window.model_folders.setRootPath(window.file_path)
-    window.widget_tree_folders.setModel(window.model_folders)
-    window.widget_tree_folders.setRootIndex(window.model_folders.index(window.file_path))
-    
-    window.model_files.setRootPath(window.file_path)
-    window.widget_list_files.setModel(window.model_files)
-    window.widget_list_files.setRootIndex(window.model_files.index(window.file_path))
     app.exec()
+
+if __name__ == '__main__':
+    run()
