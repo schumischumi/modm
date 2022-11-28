@@ -1,3 +1,5 @@
+from os import path
+import PyPDF2
 from PySide6.QtCore import QDir
 from PySide6.QtWebEngineCore import QWebEngineSettings
 from PySide6.QtWebEngineWidgets import QWebEngineView
@@ -10,11 +12,13 @@ from PySide6.QtWidgets import (
     QTreeView,
     QFileSystemModel,
     QListView,
+    QMessageBox,
 
 )
-class cms():
+class ui_cms(QWidget):
 
     def __init__(self):
+        super(ui_cms, self).__init__()
         self.file_path = '/home/user/Downloads'
 
         layout_cms = QHBoxLayout()
@@ -52,11 +56,13 @@ class cms():
         layout_cms.addLayout( layout_files,stretch=2)
 
         # Document Layout
-        self.view = QWebEngineView()
-        self.view.settings().setAttribute(QWebEngineSettings.PluginsEnabled, True)
-        self.view.settings().setAttribute(QWebEngineSettings.PdfViewerEnabled, True)
+        self.document_view = QWebEngineView()
+        self.document_view.settings().setAttribute(QWebEngineSettings.PluginsEnabled, True)
+        self.document_view.settings().setAttribute(QWebEngineSettings.PdfViewerEnabled, True)
+        document_path = path.join(path.dirname(path.dirname(path.abspath(__file__))), 'ressources','modm_logo.svg')
+        self.document_view.setUrl(f"file://{document_path}")
         layout_document = QVBoxLayout()
-        layout_document.addWidget(self.view)
+        layout_document.addWidget(self.document_view)
 
         # Document Layout -> buttons
         layout_document_buttons = QHBoxLayout()
@@ -83,8 +89,7 @@ class cms():
         self.model_files.setRootPath(self.file_path)
         self.widget_list_files.setModel(self.model_files)
         self.widget_list_files.setRootIndex(self.model_files.index(self.file_path))
-        self.widget_cms = QWidget()
-        self.widget_cms.setLayout(layout_cms)
+        self.setLayout(layout_cms)
 
 
     def open_folder(self,index):
@@ -95,8 +100,13 @@ class cms():
         self.widget_list_files.setRootIndex(self.model_files.index(self.file_path))
 
     def open_document(self,index):
-        self.view.setUrl(f"file://{self.model_files.filePath(index)}")
+        document_path = self.model_files.filePath(index)
+        try:
+            PyPDF2.PdfReader(open(document_path, "rb"))
+        except FileNotFoundError:
+            QMessageBox.critical(self, "Open document error", (f"File {document_path} \n does not exist."))
+        except PyPDF2.errors.PyPdfError as pdferror:
+            QMessageBox.critical(self, "Open document error", (f"File {document_path} \n is invalid! \n Error: {str(pdferror)}"))
+        else:
+            self.document_view.setUrl(f"file://{document_path}")
 
-
-    def go_back(self):
-        self.view.back()

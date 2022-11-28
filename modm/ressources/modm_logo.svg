@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="640" height="480" viewBox="0 0 640 480" xml:space="preserve">
+<desc>Created with Fabric.js 3.6.6</desc>
+<defs>
+</defs>
+<g transform="matrix(3.57 0 0 3.57 425.97 256.04)" style=""  >
+		<text xml:space="preserve" font-family="'Open Sans', sans-serif" font-size="20" font-style="normal" font-weight="normal" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(87,159,85); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-110.62" y="-33.04" style="stroke-width: 1; font-family: 'Open Sans', sans-serif; font-size: 20px; font-style: normal; font-weight: normal; fill: rgb(0,0,0); ">M</tspan><tspan x="-92.63" y="-33.04" style="stroke-width: 1; font-family: 'Open Sans', sans-serif; font-size: 20px; font-style: normal; font-weight: normal; fill: rgb(0,0,0); white-space: pre; ">y </tspan><tspan x="-110.62" y="-6.83" style="stroke-width: 1; font-family: 'Open Sans', sans-serif; font-size: 20px; font-style: normal; font-weight: normal; fill: rgb(0,0,0); white-space: pre; ">Own </tspan><tspan x="-110.62" y="19.39" style="stroke-width: 1; font-family: 'Open Sans', sans-serif; font-size: 20px; font-style: normal; font-weight: normal; fill: rgb(0,0,0); ">Document</tspan><tspan x="-110.62" y="45.61" style="stroke-width: 1; font-family: 'Open Sans', sans-serif; font-size: 20px; font-style: normal; font-weight: normal; fill: rgb(0,0,0); ">Management</tspan></text>
+</g>
+<g transform="matrix(0.94 -0.35 0.35 0.94 480 274)"  >
+<path style="stroke: rgb(0,0,0); stroke-width: 4; stroke-dasharray: 15 15; stroke-linecap: square; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,128,0); fill-opacity: 0.5; fill-rule: nonzero; opacity: 1;"  transform=" translate(-100, -100)" d="M 0 0 L 200 100 L 170 200 z" stroke-linecap="round" />
+</g>
+</svg>
