@@ -1,14 +1,22 @@
+"""_summary_
+"""
 import sys
-from PySide6.QtGui import QPalette, QColor,QScreen
+from PySide6.QtGui import QPalette, QColor, QScreen
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
     QWidget,
     QTabWidget,
 )
-from modm.functions.cms import ui_cms
+from modm.functions.layout_cms import UiCms
+
 
 class Color(QWidget):
+    """_summary_
+
+    Args:
+        QWidget (_type_): _description_
+    """
 
     def __init__(self, color):
         super(Color, self).__init__()
@@ -18,7 +26,13 @@ class Color(QWidget):
         palette.setColor(QPalette.Window, QColor(color))
         self.setPalette(palette)
 
+
 class MainWindow(QMainWindow):
+    """_summary_
+
+    Args:
+        QMainWindow (_type_): _description_
+    """
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -26,23 +40,22 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("My Own Document Management")
         screen_size = QScreen.availableGeometry(QApplication.primaryScreen())
 
-        #Get Screen Width
-        screen_size_x=screen_size.width()
+        # Get Screen Width
+        screen_size_x = screen_size.width()
 
-        #Get Screen Height
-        screen_size_y=screen_size.height()
+        # Get Screen Height
+        screen_size_y = screen_size.height()
 
-        #Pyside Window State maximized
+        # Pyside Window State maximized
         self.setGeometry(0, 0, screen_size_x, screen_size_y)
 
         self.file_path = '/home/user/Downloads'
-
 
         # Tab Menu
         tab_menu = QTabWidget()
         tab_menu.setTabPosition(QTabWidget.West)
         tab_menu.setMovable(True)
-        tab_menu.addTab(ui_cms(), 'CMS')
+        tab_menu.addTab(UiCms(), 'CMS')
         tab_menu.addTab(Color('red'), 'Merge')
         tab_menu.addTab(Color('red'), 'Split')
         tab_menu.addTab(Color('red'), 'Rename')
@@ -54,11 +67,14 @@ class MainWindow(QMainWindow):
 
 
 def run():
+    """_summary_
+    """
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
 
     app.exec()
+
 
 if __name__ == '__main__':
     run()

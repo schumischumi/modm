@@ -1,0 +1,8 @@
+[Common]
+base_directory = /home/user/Downloads
+
+[Search]
+engine = baloo
+engin_path = /usr/bin/baloosearch
+allowed_characters = - A-Z\n- a-z\n- 0-9\n- , . /\n- Space
+sanatize_whitelist = [^0-9a-zA-Z\/.,\s]+
