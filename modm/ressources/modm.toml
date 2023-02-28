@@ -1,8 +1,16 @@
-[Common]
+[common]
 base_directory = /home/user/Downloads
+language = en
 
-[Search]
+[search]
 engine = baloo
+
+[search_baloo]
 engin_path = /usr/bin/baloosearch
 allowed_characters = - A-Z\n- a-z\n- 0-9\n- , . /\n- Space
 sanatize_whitelist = [^0-9a-zA-Z\/.,\s]+
+
+[orc]
+language = de
+tesseract_bin_path = /
+tesseract_lang_path = /

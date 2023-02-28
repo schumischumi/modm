@@ -14,7 +14,6 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QTreeView,
     QFileSystemModel,
-    QListView,
     QMessageBox,
     QStyle,
     QTableView,
@@ -215,4 +214,5 @@ class UiCms(QWidget):
         else:
             QMessageBox.information(self, "Search Information",
                                     "Only the followning characters are allowed and everything "
-                                    "else will be ignored:\n" + self.search_instance.allowed_characters)
+                                    "else will be ignored:\n"
+                                    + self.search_instance.allowed_characters)
